@@ -4,7 +4,7 @@ import sys
 pygame.init()
 
 # Window dimensions:
-width, height = 520, 520
+width, height = 904, 904
 screen = pygame.display.set_mode((width, height)) 
 pygame.display.set_caption("Chess Game")
 
@@ -29,48 +29,48 @@ def tint_image(image, tint_color):
     return tinted_image
 
 grey_tint = (150, 150, 150, 0)  # RGBA color for a grey tint
-blue_tint = (153 , 191, 209, 0) # RGBA color for a blue tint
+blue_tint = (153 , 191, 209) # RGBA color for a blue tint
 
 # B&W Pawns
-wp = pygame.image.load(r'C:\Users\socce\Chess_Game\PawnM.JPG')
-wp = pygame.transform.scale(wp, (65, 65))
-bp = pygame.image.load(r'C:\Users\socce\Chess_Game\PawnM.JPG')
-bp = pygame.transform.scale(bp, (65, 65))
+wp = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Pawn.PNG')
+wp = pygame.transform.scale(wp, (113, 113))
+bp = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Pawn.PNG')
+bp = pygame.transform.scale(bp, (113, 113))
 bp = tint_image(bp, blue_tint)
 
 # B&W Knights
-wkn = pygame.image.load(r'C:\Users\socce\Chess_Game\KnightM.JPG')
-wkn = pygame.transform.scale(wkn, (65, 65))
-bkn = pygame.image.load(r'C:\Users\socce\Chess_Game\KnightM.JPG')
-bkn = pygame.transform.scale(bkn, (65, 65))
+wkn = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Knight.PNG')
+wkn = pygame.transform.scale(wkn, (113, 113))
+bkn = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Knight.PNG')
+bkn = pygame.transform.scale(bkn, (113, 113))
 bkn = tint_image(bkn, blue_tint)
 
 # B&W Bishops
-wb = pygame.image.load(r'C:\Users\socce\Chess_Game\BishopM.JPG')
-wb = pygame.transform.scale(wb, (65, 65))
-bb = pygame.image.load(r'C:\Users\socce\Chess_Game\BishopM.JPG')
-bb = pygame.transform.scale(bb,(65,65))
+wb = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Bishop.PNG')
+wb = pygame.transform.scale(wb, (113, 113))
+bb = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Bishop.PNG')
+bb = pygame.transform.scale(bb,(113,113))
 bb = tint_image(bb, blue_tint)
 
 # B&W Rooks
-wr = pygame.image.load(r'C:\Users\socce\Chess_Game\RookM.JPG')
-wr = pygame.transform.scale(wr, (65, 65))
-br = pygame.image.load(r'C:\Users\socce\Chess_Game\RookM.JPG')
-br = pygame.transform.scale(br,(65,65))
+wr = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Rook.PNG')
+wr = pygame.transform.scale(wr, (113, 113))
+br = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Rook.PNG')
+br = pygame.transform.scale(br,(113,113))
 br = tint_image(br, blue_tint)
 
 # B&W Queens
-wq = pygame.image.load(r'C:\Users\socce\Chess_Game\QueenM.JPG')
-wq = pygame.transform.scale(wq, (65, 65))
-bq = pygame.image.load(r'C:\Users\socce\Chess_Game\QueenM.JPG')
-bq = pygame.transform.scale(bq, (65, 65))
+wq = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Queen.PNG')
+wq = pygame.transform.scale(wq, (113, 113))
+bq = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\Queen.PNG')
+bq = pygame.transform.scale(bq, (113, 113))
 bq = tint_image(bq, blue_tint)
 
 # B&W Kings
-wk = pygame.image.load(r'C:\Users\socce\Chess_Game\KingM.JPG')
-wk = pygame.transform.scale(wk, (65, 65))
-bk = pygame.image.load(r'C:\Users\socce\Chess_Game\KingM.JPG')
-bk = pygame.transform.scale(bk, (65, 65))
+wk = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\King.PNG')
+wk = pygame.transform.scale(wk, (113, 113))
+bk = pygame.image.load(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\King.PNG')
+bk = pygame.transform.scale(bk, (113, 113))
 bk = tint_image(bk, blue_tint)
 
 # Blank 8x8 board
@@ -112,6 +112,30 @@ piece_images = {
     'bk': bk
 }
 
+# Names of pieces
+pieces = {
+    'wp': "White Pawn",
+    'bp': "Black Pawn",
+    'wkn': "White Knight",
+    'bkn': "Black Knight",
+    'wb': "White Bishop",
+    'bb': "Black Bishop",
+    'wr': "White Rook",
+    'br': "Black Rook",
+    'wq': "White Queen",
+    'bq': "Black Queen",
+    'wk': "White King",
+    'bk': "Black King"
+}
+
+# Load chess board coordinates into board_pos dictionary
+board_pos = {}
+columns = 'abcdefgh'
+rows = '87654321'
+for i in range(8):
+    for j in range(8):
+        board_pos[(i, j)] = columns[j] + rows[i]
+
 # Draw the chess board
 def draw_board():
     colors = [light,dark]
@@ -128,22 +152,66 @@ def draw_board():
             if piece:
                 screen.blit(piece_images[piece], (col * tile_size, row * tile_size))
 
-# On player turn, record the coordinates of the player's mouse click
-    # Triangulate the coordinates of the mouse click to the corresponding square in the 'board' array
+# On player turn, record the pos of the player's mouse click
+    # Triangulate the pos of the mouse click to the corresponding square in the 'board' array
 # Which ever piece is selected, upon the player's next click, triangulate the corrdinates of the mouse click to 'board' array
     # If it is a valid move, over write the piece in 'board' with selected piece
     # if not a valid move, try again
-
-def handle_click(coordinates):
-    selected_piece = None
-    x = coordinates[0]
-    y = coordinates[1]
-    print("X:",x,"Y:",y)
-
-
-
 # Detect checks/en passant
 
+selected_piece = None
+selected_pos = None
+
+# Logic for handling user click inputs
+def handle_click(pos):
+    global selected_piece, selected_pos
+    x,y = pos
+    tile_size = width // 8
+    row = y // tile_size
+    col = x // tile_size
+    clicked_pos = (row,col)
+
+    if selected_piece: # If a piece is clicked on
+        move_piece(clicked_pos) # Send the end pos to move_piece method
+        selected_piece = None
+        selected_pos = None
+    else: # Select a piece
+        if board[row][col]:
+            selected_piece = board[row][col] # This is the piece clicked on
+            selected_pos = (row, col) # This is the pos of the piece clicked on
+
+player_turn = 0 # Global variable to keep track of which player's turn it is
+
+# Logic for how each piece can move
+def move_piece(end_pos):
+    global player_turn
+    x1,y1 = selected_pos
+    x2,y2 = end_pos
+
+    if player_turn % 2==0 and "White" in pieces[selected_piece]: # If it is white's turn...
+        print(pieces[selected_piece],board_pos[(x1,y1)],"to",board_pos[(x2,y2)])
+        # Update the board
+        board[x2][y2] = board[x1][y1]
+        board[x1][y1] = None 
+        draw_board()
+        pygame.display.flip()
+        player_turn +=1
+
+    elif player_turn % 2==1 and "Black" in pieces[selected_piece]: # If it is black's turn...
+        print(pieces[selected_piece],board_pos[(x1,y1)],"to",board_pos[(x2,y2)])
+        # Update the board
+        board[x2][y2] = board[x1][y1]
+        board[x1][y1] = None 
+        draw_board()
+        pygame.display.flip()
+        player_turn +=1
+
+    else:
+        if player_turn % 2==0:
+            print("White to move")
+        else:
+            print("Black to move")
+ 
 def game():
     # Main game loop
     running = True
@@ -155,8 +223,5 @@ def game():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 handle_click(pygame.mouse.get_pos())
-        
         pygame.display.flip()
-
 game()
-    
