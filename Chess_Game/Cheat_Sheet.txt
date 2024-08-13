@@ -1,0 +1,14 @@
+Square 1: 0 - 64 pixels
+Square 2: 65 - 129 pixels
+Square 3: 130 - 194 pixels
+Square 4: 195 - 259 pixels
+Square 5: 260 - 324 pixels
+Square 6: 325 - 389 pixels
+Square 7: 390 - 454 pixels
+Square 8: 455 - 519 pixels
+
+wp = White Pawn
+wkn = White Knight
+wb = White Bishop
+wq = White Queen
+wk = White King
