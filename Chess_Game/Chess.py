@@ -1,5 +1,6 @@
 import pygame
 import sys
+from Logic import logic
 
 pygame.init()
 
@@ -152,13 +153,6 @@ def draw_board():
             if piece:
                 screen.blit(piece_images[piece], (col * tile_size, row * tile_size))
 
-# On player turn, record the pos of the player's mouse click
-    # Triangulate the pos of the mouse click to the corresponding square in the 'board' array
-# Which ever piece is selected, upon the player's next click, triangulate the corrdinates of the mouse click to 'board' array
-    # If it is a valid move, over write the piece in 'board' with selected piece
-    # if not a valid move, try again
-# Detect checks/en passant
-
 selected_piece = None
 selected_pos = None
 
@@ -188,23 +182,29 @@ def move_piece(end_pos):
     x1,y1 = selected_pos
     x2,y2 = end_pos
 
-    if player_turn % 2==0 and "White" in pieces[selected_piece]: # If it is white's turn...
-        print(pieces[selected_piece],board_pos[(x1,y1)],"to",board_pos[(x2,y2)])
-        # Update the board
-        board[x2][y2] = board[x1][y1]
-        board[x1][y1] = None 
-        draw_board()
-        pygame.display.flip()
-        player_turn +=1
+    if player_turn % 2 == 0 and "White" in pieces[selected_piece]:  # If it is white's turn...
+        if not logic(selected_piece, selected_pos, end_pos, board, pieces):
+            print("Invalid move")
+        else:
+            print(pieces[selected_piece], board_pos[(x1, y1)], "to", board_pos[(x2, y2)])
+            # Update the board
+            board[x2][y2] = board[x1][y1]
+            board[x1][y1] = None 
+            draw_board()
+            pygame.display.flip()
+            player_turn += 1
 
     elif player_turn % 2==1 and "Black" in pieces[selected_piece]: # If it is black's turn...
-        print(pieces[selected_piece],board_pos[(x1,y1)],"to",board_pos[(x2,y2)])
-        # Update the board
-        board[x2][y2] = board[x1][y1]
-        board[x1][y1] = None 
-        draw_board()
-        pygame.display.flip()
-        player_turn +=1
+        if not logic(selected_piece, selected_pos, end_pos, board, pieces):
+            print("Invalid move")
+        else:
+            print(pieces[selected_piece],board_pos[(x1,y1)],"to",board_pos[(x2,y2)])
+            # Update the board
+            board[x2][y2] = board[x1][y1]
+            board[x1][y1] = None 
+            draw_board()
+            pygame.display.flip()
+            player_turn +=1
 
     else:
         if player_turn % 2==0:
