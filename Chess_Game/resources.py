@@ -3,10 +3,6 @@ from init import init_images
 
 def load_images():
     wp, bp, wkn, bkn, wb, bb, wr, br, wq, bq, wk, bk = init_images()
-    '''
-    black_pieces = bp, bkn, bb, br, bq, bk
-    tint_pieces(black_pieces)
-    '''
     piece_images = {
         'wp': wp,
         'bp': bp,

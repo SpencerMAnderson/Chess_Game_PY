@@ -1,21 +1,32 @@
+from resources import pieces
+
 # Function to check if the move can be played
 def logic(selected_piece, selected_pos, end_pos, board, pieces):
     x1, y1 = selected_pos
     x2, y2 = end_pos
     
-    # Pawn logic
-    # Need to handle enpessant
-    if selected_piece == 'wp' or selected_piece == 'bp':
-        # Pawns move one step forward
-        if (y1 == y2 and x2 == x1 - 1 and board[x2][y2] is None) or (y1 == y2 and x2 == x1 + 1 and board[x2][y2] is None):
+    if selected_piece == 'wp':  # White pawn logic
+        # Move one step forward
+        if y1 == y2 and x2 == x1 - 1 and board[x2][y2] is None:
             return True
-        # Pawns move two steps forward from the starting position
-        if (y1 == y2 and x1 == 6 and x2 == x1 - 2 and board[x2][y2] is None and board[x1 - 1][y1] is None) or (y1 == y2 and x1 == 1 and x2 == x1 + 2 and board[x2][y2] is None and board[x1 + 1][y1] is None):
+        # Move two steps forward from the starting position
+        if y1 == y2 and x1 == 6 and x2 == x1 - 2 and board[x2][y2] is None and board[x1 - 1][y1] is None:
             return True
-        # Pawns capture diagonally
-        if (abs(y2 - y1) == 1 and x2 == x1 - 1 and board[x2][y2] is not None and "Black" in pieces[board[x2][y2]]) or (abs(y2 - y1) == 1 and x2 == x1 + 1 and board[x2][y2] is not None and "White" in pieces[board[x2][y2]]):
+        # Capture diagonally
+        if abs(y2 - y1) == 1 and x2 == x1 - 1 and board[x2][y2] is not None and "Black" in pieces[board[x2][y2]]:
+            return True  
+
+    elif selected_piece == 'bp':  # Black pawn logic
+        # Move one step forward
+        if y1 == y2 and x2 == x1 + 1 and board[x2][y2] is None:
             return True
-        
+        # Move two steps forward from the starting position
+        if y1 == y2 and x1 == 1 and x2 == x1 + 2 and board[x2][y2] is None and board[x1 + 1][y1] is None:
+            return True
+        # Capture diagonally
+        if abs(y2 - y1) == 1 and x2 == x1 + 1 and board[x2][y2] is not None and "White" in pieces[board[x2][y2]]:
+            return True
+
     # Knight logic 
     if selected_piece == 'wkn' or selected_piece == 'bkn':
         # All possible moves of a knight
@@ -40,7 +51,6 @@ def logic(selected_piece, selected_pos, end_pos, board, pieces):
 
         x, y = x1 + dx, y1 + dy  # Start from the next square along the diagonal
 
-        # Loop until you reach the destination
         while x != x2 and y != y2:
             if board[x][y] is not None:  # Check if the square is occupied
                 return False  # Path is blocked
@@ -53,7 +63,8 @@ def logic(selected_piece, selected_pos, end_pos, board, pieces):
         if abs(x2 - x1) == abs(y2 - y1) and check_diagonal(x1, y1, x2, y2, board):
             if board[x2][y2] is None or ("White" in pieces[selected_piece] and "Black" in pieces[board[x2][y2]]) or ("Black" in pieces[selected_piece] and "White" in pieces[board[x2][y2]]):
                 return True
-            
+
+    # Check if there is any pieces obscuring a rank/file
     def check_straight_line(x1, y1, x2, y2, board):
         # Vertical movement
         if x1 == x2:
@@ -70,27 +81,46 @@ def logic(selected_piece, selected_pos, end_pos, board, pieces):
         return True
 
     # Rook logic
-    if selected_piece == 'wr' or selected_piece == 'br':  # Rook can be either white or black
+    if selected_piece == 'wr' or selected_piece == 'br': 
         if (x1 == x2 or y1 == y2) and check_straight_line(x1, y1, x2, y2, board):
-            # Check if the destination square has a piece of the same color
             if board[x2][y2] is None or ("White" in pieces[selected_piece] and "Black" in pieces[board[x2][y2]]) or ("Black" in pieces[selected_piece] and "White" in pieces[board[x2][y2]]):
                 return True
             
     # Queen logic
     if selected_piece == 'wq' or selected_piece == 'bq':
         if ((x1 == x2 or y1 == y2) and check_straight_line(x1, y1, x2, y2, board)) or (abs(x2 - x1) == abs(y2 - y1) and check_diagonal(x1, y1, x2, y2, board)):
-            # Check if the destination square has a piece of the same color
             if board[x2][y2] is None or ("White" in pieces[selected_piece] and "Black" in pieces[board[x2][y2]]) or ("Black" in pieces[selected_piece] and "White" in pieces[board[x2][y2]]):
                 return True
     
     # King logic
-    if selected_piece == 'wk':
-        
-        dx = 1 if x2 > x1 else -1  # Determine direction of movement in x-axis
-        dy = 1 if y2 > y1 else -1  # Determine direction of movement in y-axis
+    if selected_piece == 'wk' or selected_piece == 'bk':
+        dx = abs(x2 - x1)
+        dy = abs(y2 - y1)
 
-        x, y = x1 + dx, y1 + dy  # Start from the next square along the diagonal
-            
+        # Check if the king is moving only one square in any direction
+        if (dx <= 1 and dy <= 1) and ((check_straight_line(x1, y1, x2, y2, board)) or (check_diagonal(x1, y1, x2, y2, board))):
+            if board[x2][y2] is None or ("White" in pieces[selected_piece] and "Black" in pieces[board[x2][y2]]) or ("Black" in pieces[selected_piece] and "White" in pieces[board[x2][y2]]):
+                return True
 
+    return False
 
+def king_position(board, king_color):
+    king_piece = 'wk' if king_color == 'w' else 'bk'
+    for row in range(8):
+        for col in range(8):
+            if board[row][col] == king_piece:
+                return (row, col)
+    return None  
+    
+# Check if a king is in check
+def is_in_check(board, king_pos, is_white):
+    opponent_color = 'b' if is_white else 'w'
+
+    for row in range(8):
+        for col in range(8):
+            piece = board[row][col]
+            if piece and piece.startswith(opponent_color):
+                # If the piece's logic can move to the king...
+                if logic(piece, (row, col), king_pos, board, pieces):
+                    return True  # The king is in check
     return False
