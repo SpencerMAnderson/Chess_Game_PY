@@ -163,11 +163,11 @@ def is_checkmate(king_pos, board, pieces):
             if piece and piece.startswith(king_color):
                 for x in range(8):
                     for y in range(8):
-                        if logic(piece, (x, y), (row, col), board, pieces):
+                        if logic(piece, (row, col),(x, y), board, pieces):
                             # Simulate the move
                             simulated_board = copy.deepcopy(board)
-                            simulated_board[x][y] = simulated_board[row][col]
-                            simulated_board[row][col] = None
+                            simulated_board[row][col] = simulated_board[x][y]
+                            simulated_board[x][y] = None
                             
                             # Check if the king is still in check after the move
                             if not is_in_check(simulated_board, king_pos, king_color == 'w'):

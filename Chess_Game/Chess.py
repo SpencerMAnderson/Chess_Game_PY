@@ -23,4 +23,4 @@ def game():
                 elif event.button == 3:
                     handle_click(pygame.mouse.get_pos(),board, screen,3)
         pygame.display.flip()
-game()
+game() 

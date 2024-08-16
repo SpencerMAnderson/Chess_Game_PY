@@ -9,3 +9,4 @@
 
 # or let the player choose a time format/increment
 
+# Draw the chess board
