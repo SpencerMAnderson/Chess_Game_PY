@@ -1,13 +1,14 @@
 import pygame
 import copy
-from init import width
+from init import width, init_sounds
 from resources import pieces
 from utils import board_pos
-from logic import logic, king_position, is_in_check
+from logic import logic, king_position, is_in_check, is_checkmate
 from board import draw_board
 
 selected_piece = None
 selected_pos = None
+move_piece_sound, piece_captured, check, invalid_move, victory, game_start = init_sounds()
 
 # Logic for handling user click inputs
 def handle_click(pos,board,screen):
@@ -49,6 +50,7 @@ def move_piece(end_pos, board, screen):
     # Ensure the piece being moved belongs to the current player
     if current_player in pieces[selected_piece]:  
         if not logic(selected_piece, selected_pos, end_pos, board, pieces):
+            pygame.mixer.Sound.play(invalid_move)
             print("Invalid move")
         else:
             # Simulate the move on a copied board
@@ -57,6 +59,7 @@ def move_piece(end_pos, board, screen):
             simulated_board[x1][y1] = None
 
             if is_in_check(simulated_board, king_position(simulated_board, current_king), current_king == 'w'):
+                pygame.mixer.Sound.play(invalid_move)
                 print(f"Invalid move: The {current_player.lower()} king would be in check!")
             else:
                 # Execute the move on the actual board
@@ -64,16 +67,28 @@ def move_piece(end_pos, board, screen):
 
                 # Check if the opponent's king is now in check
                 if is_in_check(board, king_position(board, opponent_king), current_king != 'w'):
-                    print(f"The {opponent.lower()} king is in check!")
+                    if is_checkmate(king_position(board, opponent_king), board, pieces):
+                        print(f"Game over! {current_player} wins!")
+                        pygame.mixer.Sound.play(victory)
+                    else:
+                        pygame.mixer.Sound.play(check)
+                        print(f"The {opponent.lower()} king is in check!")
     else:
+        pygame.mixer.Sound.play(invalid_move)
         print(f"{current_player} to move")
+
 
 def execute_move(board, x1, y1, x2, y2, screen):
     global player_turn
+    captured = True if board[x2][y2] is not None else False
+
     print(pieces[selected_piece], board_pos[(x1, y1)], "to", board_pos[(x2, y2)])
-    # Update the board
     board[x2][y2] = board[x1][y1]
     board[x1][y1] = None 
     draw_board(screen,board)
     pygame.display.flip()
+    if captured:
+        pygame.mixer.Sound.play(piece_captured)
+    else:
+        pygame.mixer.Sound.play(move_piece_sound)
     player_turn += 1

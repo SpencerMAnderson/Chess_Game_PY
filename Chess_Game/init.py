@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 # What computer am I on?
 computer = "Home"
@@ -123,3 +124,32 @@ def init_board():
     board[0][4] = 'bk'  # Black king
 
     return board
+
+# Initilaize sound effects
+def init_sounds():
+    pygame.mixer.init()
+
+    if computer == "Laptop":
+        move_piece_sound = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\piece_moved.mp3')
+        piece_captured = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\piece_captured.mp3')
+        check = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\check.mp3')
+        invalid_move = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\invalid_move.mp3')
+        victory = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\victory.mp3')
+        game_start = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\game_start.mp3')
+    else:
+        move_piece_sound = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\piece_moved.mp3')
+        piece_captured = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\piece_captured.mp3')
+        check = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\check.mp3')
+        invalid_move = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\invalid_move.mp3')
+        victory = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\victory.mp3')
+        game_start = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\game_start.mp3')
+    
+    # Set the volume of sound effects
+    pygame.mixer.Sound.set_volume(move_piece_sound, 0.5)
+    pygame.mixer.Sound.set_volume(piece_captured, 0.4)
+    pygame.mixer.Sound.set_volume(check, 0.3)
+    pygame.mixer.Sound.set_volume(invalid_move, 0.3)
+    pygame.mixer.Sound.set_volume(victory, 0.3)
+    pygame.mixer.Sound.set_volume(game_start, 0.3)
+
+    return move_piece_sound, piece_captured, check, invalid_move, victory, game_start
