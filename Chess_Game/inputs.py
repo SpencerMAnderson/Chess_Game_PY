@@ -11,22 +11,25 @@ selected_pos = None
 move_piece_sound, piece_captured, check, invalid_move, victory, game_start = init_sounds()
 
 # Logic for handling user click inputs
-def handle_click(pos,board,screen):
-    global selected_piece, selected_pos
-    x,y = pos
-    tile_size = width // 8
-    row = y // tile_size
-    col = x // tile_size
-    clicked_pos = (row,col)
+def handle_click(pos,board,screen,click):
+    if click == 1:
+        global selected_piece, selected_pos
+        x,y = pos
+        tile_size = width // 8
+        row = y // tile_size
+        col = x // tile_size
+        clicked_pos = (row,col)
 
-    if selected_piece: # If a piece is clicked on
-        move_piece(clicked_pos,board,screen) # Send the end pos to move_piece method
+        if selected_piece: # If a piece is clicked on
+            move_piece(clicked_pos,board,screen) # Send the end pos to move_piece method
+            selected_piece = None
+            selected_pos = None
+        else: # Select a piece
+            if board[row][col]:
+                selected_piece = board[row][col] # This is the piece clicked on
+                selected_pos = (row, col) # This is the pos of the piece clicked on
+    elif click == 3:
         selected_piece = None
-        selected_pos = None
-    else: # Select a piece
-        if board[row][col]:
-            selected_piece = board[row][col] # This is the piece clicked on
-            selected_pos = (row, col) # This is the pos of the piece clicked on
 
 player_turn = 0 # Global variable to keep track of which player's turn it is
 
