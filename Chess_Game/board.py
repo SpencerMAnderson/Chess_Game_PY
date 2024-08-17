@@ -8,7 +8,7 @@ def draw_board(screen, board):
     dark = (153 , 191, 209)
     colors = [light,dark]
     tile_size = width // 8 
-
+    
     # Print the board
     for row in range(8):
         for col in range(8):

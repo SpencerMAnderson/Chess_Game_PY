@@ -130,31 +130,6 @@ def is_in_check(board, king_pos, is_white):
 def is_checkmate(king_pos, board, pieces):
     king_x, king_y = king_pos
     king_color = 'w' if 'w' in board[king_x][king_y] else 'b'
-    opponent_color = 'b' if king_color == 'w' else 'w'
-    
-    # Check if the king can move to any adjacent square without being in check
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            if dx == 0 and dy == 0:
-                continue
-            new_x, new_y = king_x + dx, king_y + dy
-            if 0 <= new_x < 8 and 0 <= new_y < 8:  # Ensure new position is within bounds
-                if board[new_x][new_y] is None or board[new_x][new_y].startswith(opponent_color):
-                    # Temporarily move the king to the new position
-                    original_piece = board[new_x][new_y]
-                    board[new_x][new_y] = board[king_x][king_y]
-                    board[king_x][king_y] = None
-                    
-                    # Check if the king would still be in check at the new position
-                    if not is_in_check(board, (new_x, new_y), king_color == 'w'):
-                        # Restore the original board state
-                        board[king_x][king_y] = board[new_x][new_y]
-                        board[new_x][new_y] = original_piece
-                        return False
-                    
-                    # Restore the original board state
-                    board[king_x][king_y] = board[new_x][new_y]
-                    board[new_x][new_y] = original_piece
     
     # If the king cannot move, check if any other piece can block the check or capture the attacking piece
     for row in range(8):
@@ -163,7 +138,7 @@ def is_checkmate(king_pos, board, pieces):
             if piece and piece.startswith(king_color):
                 for x in range(8):
                     for y in range(8):
-                        if logic(piece, (row, col),(x, y), board, pieces):
+                        if logic(piece, (x, y), (row, col), board, pieces):
                             # Simulate the move
                             simulated_board = copy.deepcopy(board)
                             simulated_board[row][col] = simulated_board[x][y]
