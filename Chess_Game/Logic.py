@@ -131,23 +131,27 @@ def is_checkmate(king_pos, board, pieces):
     king_x, king_y = king_pos
     king_color = 'w' if 'w' in board[king_x][king_y] else 'b'
     
-    # If the king cannot move, check if any other piece can block the check or capture the attacking piece
-    for row in range(8):
-        for col in range(8):
-            piece = board[row][col]
+    # Check if any pieces can block the check or capture the attacking piece
+    for x1 in range(8):
+        for y1 in range(8):
+            # For every piece on the board
+            piece = board[x1][y1]
+            # If the piece is the same color as the king in check
             if piece and piece.startswith(king_color):
-                for x in range(8):
-                    for y in range(8):
-                        if logic(piece, (x, y), (row, col), board, pieces):
+                for x2 in range(8):
+                    for y2 in range(8):
+                        # Check if that piece can move to a random square on the board
+                        if logic(piece, (x1, y1), (x2, y2), board, pieces):
                             # Simulate the move
                             simulated_board = copy.deepcopy(board)
-                            simulated_board[row][col] = simulated_board[x][y]
-                            simulated_board[x][y] = None
-                            
+                            simulated_board[x2][y2] = simulated_board[x1][y1]
+                            simulated_board[x1][y1] = None
+                            new_king_pos = (x2,y2) if piece.endswith('k') else king_pos
+                    
                             # Check if the king is still in check after the move
-                            if not is_in_check(simulated_board, king_pos, king_color == 'w'):
+                            if not is_in_check(simulated_board, new_king_pos, king_color == 'w'):
                                 return False  # If any piece can prevent checkmate
-    
+                            
     # If no valid moves can prevent check, it's checkmate
     return True
 
