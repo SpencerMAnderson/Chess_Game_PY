@@ -1,9 +1,8 @@
 import pygame
 import copy
 from init import width, init_sounds
-from resources import pieces
-from utils import board_pos
-from logic import logic, king_position, is_in_check, is_checkmate
+from resources import pieces, board_pos
+from Logic import logic, king_position, is_in_check, is_checkmate
 from board import draw_board
 
 selected_piece = None
@@ -86,8 +85,23 @@ def execute_move(board, x1, y1, x2, y2, screen):
     captured = True if board[x2][y2] is not None else False
 
     print(pieces[selected_piece], board_pos[(x1, y1)], "to", board_pos[(x2, y2)])
+    
+    # Check if the move is a castling move
+    if board[x1][y1] in ['wk', 'bk'] and abs(y2 - y1) == 2:
+        # Kingside castling
+        if y2 == 6:
+            board[x2][5] = board[x2][7]  # Move the rook to f1/f8
+            board[x2][7] = None          # Clear the original rook position
+        # Queenside castling
+        elif y2 == 2:
+            board[x2][3] = board[x2][0]  # Move the rook to d1/d8
+            board[x2][0] = None          # Clear the original rook position
+    
+    # Regular move or castling king move
+
     board[x2][y2] = board[x1][y1]
-    board[x1][y1] = None 
+    board[x1][y1] = None
+
     draw_board(screen,board)
     pygame.display.flip()
     if captured:

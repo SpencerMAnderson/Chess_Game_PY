@@ -68,12 +68,44 @@ def logic(selected_piece, selected_pos, end_pos, board, pieces):
         dx = abs(x2 - x1)
         dy = abs(y2 - y1)
 
-        # Check if the king is moving only one square in any direction
+        # Regular king move: one square in any direction
         if (dx <= 1 and dy <= 1) and ((check_straight_line(x1, y1, x2, y2, board)) or (check_diagonal(x1, y1, x2, y2, board))):
             if board[x2][y2] is None or ("White" in pieces[selected_piece] and "Black" in pieces[board[x2][y2]]) or ("Black" in pieces[selected_piece] and "White" in pieces[board[x2][y2]]):
                 return True
+        
+        # Castling logic
+        if dy == 2 and dx == 0:  # Castling move is two squares horizontally
+            if selected_piece == 'wk':
+                # White king castling
+                if y2 == 6 and board[7][7] == 'wr':  # Castling kingside with h1 rook
+                    if (check_straight_line(7, 4, 7, 7, board) and 
+                        not is_in_check(board, (7, 4), True) and
+                        not is_in_check(board, (7, 5), True) and 
+                        not is_in_check(board, (7, 6), True)):
+                        return True
+                elif y2 == 2 and board[7][0] == 'wr':  # Castling queenside with a1 rook
+                    if (check_straight_line(7, 0, 7, 2, board) and 
+                        not is_in_check(board, (7, 4), True) and 
+                        not is_in_check(board, (7, 3), True) and 
+                        not is_in_check(board, (7, 2), True)):
+                        return True
 
-    return False
+            elif selected_piece == 'bk':
+                # Black king castling
+                if y2 == 6 and board[0][7] == 'br':  # Castling kingside with h8 rook
+                    if (check_straight_line(0, 4, 0, 6, board) and 
+                        not is_in_check(board, (0, 4), False) and 
+                        not is_in_check(board, (0, 5), False) and 
+                        not is_in_check(board, (0, 6), False)):
+                        return True
+                elif y2 == 2 and board[0][0] == 'br':  # Castling queenside with a8 rook
+                    if (check_straight_line(0, 0, 0, 2, board) and 
+                        not is_in_check(board, (0, 4), False) and 
+                        not is_in_check(board, (0, 3), False) and 
+                        not is_in_check(board, (0, 2), False)):
+                        return True
+
+    return False  # Move is not valid
 
 # Check if there is any pieces obscuring a diagonal
 def check_diagonal(x1, y1, x2, y2, board):
@@ -153,6 +185,9 @@ def is_checkmate(king_pos, board, pieces):
                                 return False  # If any piece can prevent checkmate
                             
     # If no valid moves can prevent check, it's checkmate
+    return True
+
+def en_passant():
     return True
 
 

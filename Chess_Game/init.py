@@ -2,7 +2,7 @@ import pygame
 from pygame import mixer
 
 # What computer am I on?
-computer = "Home"
+computer = "Laptop"
 
 if computer == "Home":
     width, height = 904, 904

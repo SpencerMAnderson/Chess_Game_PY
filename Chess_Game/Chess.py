@@ -1,6 +1,5 @@
 import pygame
 import sys
-from pygame import mixer
 from init import init_board, init_game
 from board import draw_board
 from inputs import handle_click
