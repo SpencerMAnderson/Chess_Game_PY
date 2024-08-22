@@ -2,7 +2,7 @@ import pygame
 from pygame import mixer
 
 # What computer am I on?
-computer = "Laptop"
+computer = "Home"
 
 if computer == "Home":
     width, height = 904, 904
@@ -136,6 +136,7 @@ def init_sounds():
         invalid_move = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\invalid_move.mp3')
         victory = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\victory.mp3')
         game_start = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\game_start.mp3')
+        castle = pygame.mixer.Sound(r'C:\Users\socce\source\repos\Chess_Game_PY\Chess_Game\sounds\castle.mp3')
     else:
         move_piece_sound = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\piece_moved.mp3')
         piece_captured = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\piece_captured.mp3')
@@ -143,6 +144,7 @@ def init_sounds():
         invalid_move = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\invalid_move.mp3')
         victory = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\victory.mp3')
         game_start = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\game_start.mp3')
+        castle = pygame.mixer.Sound(r'C:\Users\First Build\source\repos\Chess_Game_PY\Chess_Game\sounds\castle.mp3')
     
     # Set the volume of sound effects
     pygame.mixer.Sound.set_volume(move_piece_sound, 0.5)
@@ -151,5 +153,6 @@ def init_sounds():
     pygame.mixer.Sound.set_volume(invalid_move, 0.3)
     pygame.mixer.Sound.set_volume(victory, 0.3)
     pygame.mixer.Sound.set_volume(game_start, 0.3)
+    pygame.mixer.Sound.set_volume(castle, 1)
 
-    return move_piece_sound, piece_captured, check, invalid_move, victory, game_start
+    return move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle

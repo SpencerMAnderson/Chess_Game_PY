@@ -1,3 +1,6 @@
+import pygame
+from init import width
+
 # This file will be dedicated to drawing up and displaying an interactive menu UI for the user.
 
 # Play button

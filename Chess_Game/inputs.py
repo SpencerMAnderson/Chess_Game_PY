@@ -7,7 +7,7 @@ from board import draw_board
 
 selected_piece = None
 selected_pos = None
-move_piece_sound, piece_captured, check, invalid_move, victory, game_start = init_sounds()
+move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle = init_sounds()
 
 # Logic for handling user click inputs
 def handle_click(pos,board,screen,click):
@@ -92,10 +92,12 @@ def execute_move(board, x1, y1, x2, y2, screen):
         if y2 == 6:
             board[x2][5] = board[x2][7]  # Move the rook to f1/f8
             board[x2][7] = None          # Clear the original rook position
+            pygame.mixer.Sound.play(castle)
         # Queenside castling
         elif y2 == 2:
             board[x2][3] = board[x2][0]  # Move the rook to d1/d8
             board[x2][0] = None          # Clear the original rook position
+            pygame.mixer.Sound.play(castle)
     
     # Regular move or castling king move
 
