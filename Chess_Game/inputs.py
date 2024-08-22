@@ -20,9 +20,10 @@ def handle_click(pos,board,screen,click):
         clicked_pos = (row,col)
 
         if selected_piece: # If a piece is clicked on
-            move_piece(clicked_pos,board,screen) # Send the end pos to move_piece method
+            game_over = move_piece(clicked_pos,board,screen) # Send the end pos to move_piece method
             selected_piece = None
             selected_pos = None
+            return game_over
         else: # Select a piece
             if board[row][col]:
                 selected_piece = board[row][col] # This is the piece clicked on
@@ -72,12 +73,14 @@ def move_piece(end_pos, board, screen):
                     if is_checkmate(king_position(board, opponent_king), board, pieces):
                         print(f"Game over! {current_player} wins!")
                         pygame.mixer.Sound.play(victory)
+                        return True
                     else:
                         pygame.mixer.Sound.play(check)
                         print(f"The {opponent.lower()} king is in check!")
     else:
         pygame.mixer.Sound.play(invalid_move)
         print(f"{current_player} to move")
+    return False
 
 
 def execute_move(board, x1, y1, x2, y2, screen):

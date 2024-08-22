@@ -10,16 +10,17 @@ board = init_board()
 # Main game loop
 def game():
     running = True
+    game_over = False
     while running:
         draw_board(screen, board)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN and not game_over:
                 if event.button == 1:
-                    handle_click(pygame.mouse.get_pos(),board, screen,1)
+                    game_over = handle_click(pygame.mouse.get_pos(),board, screen,1)
                 elif event.button == 3:
-                    handle_click(pygame.mouse.get_pos(),board, screen,3)
+                    game_over = handle_click(pygame.mouse.get_pos(),board, screen,3)
         pygame.display.flip()
 game() 
