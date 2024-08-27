@@ -1,100 +1,109 @@
-import pygame
+import pygame, copy, sys
 from pygame import mixer
 
 # What computer am I on?
-computer = "Home"
+computer = "Laptop"
 
-if computer == "Home":
-    width, height = 904, 904
-else:
-    width, height = 520, 520
+def init_dimensions():
+    pygame.init()
+    screen_info = pygame.display.Info()
+    screen_h = screen_info.current_h
+    scale = 0.85
+    height = int(screen_h * scale)
+    return height
+
+height = init_dimensions()
+
+height -= height % 8
 
 # Initialize the game window
 def init_game():
+    global height
     pygame.init()
-    screen = pygame.display.set_mode((width, height)) 
-    pygame.display.set_caption("Chess Game")
+    screen = pygame.display.set_mode((height, height)) 
+    pygame.display.set_caption("Chess")
     return screen
 
 # Initialize the PNG images with their associated pieces
 def init_images():
-    global computer
+    global computer, height
+    square_dimensions = (height // 8, height // 8)
 
     # If I am on my Laptop...
     if computer == "Laptop":
         # B&W Pawns
         wp = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/Pawn.png')
-        wp = pygame.transform.scale(wp, (65, 65))
+        wp = pygame.transform.scale(wp, square_dimensions)
         bp = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/PawnB.png')
-        bp = pygame.transform.scale(bp, (65, 65))
+        bp = pygame.transform.scale(bp, square_dimensions)
 
         # B&W Knights
         wkn = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/Knight.png')
-        wkn = pygame.transform.scale(wkn, (65, 65))
+        wkn = pygame.transform.scale(wkn, square_dimensions)
         bkn = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/KnightB.png')
-        bkn = pygame.transform.scale(bkn, (65, 65))
+        bkn = pygame.transform.scale(bkn, square_dimensions)
 
         # B&W Bishops
         wb = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/Bishop.png')
-        wb = pygame.transform.scale(wb, (65, 65))
+        wb = pygame.transform.scale(wb, square_dimensions)
         bb = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/BishopB.png')
-        bb = pygame.transform.scale(bb,(65, 65))
+        bb = pygame.transform.scale(bb,square_dimensions)
 
         # B&W Rooks
         wr = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/Rook.png')
-        wr = pygame.transform.scale(wr, (65, 65))
+        wr = pygame.transform.scale(wr, square_dimensions)
         br = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/RookB.png')
-        br = pygame.transform.scale(br,(65, 65))
+        br = pygame.transform.scale(br,square_dimensions)
 
         # B&W Queens
         wq = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/Queen.png')
-        wq = pygame.transform.scale(wq, (65, 65))
+        wq = pygame.transform.scale(wq, square_dimensions)
         bq = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/QueenB.png')
-        bq = pygame.transform.scale(bq, (65, 65))
+        bq = pygame.transform.scale(bq, square_dimensions)
 
         # B&W Kings
         wk = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/King.png')
-        wk = pygame.transform.scale(wk, (65, 65))
+        wk = pygame.transform.scale(wk, square_dimensions)
         bk = pygame.image.load('C:/Users/socce/source/repos/Chess_Game_PY/Chess_Game/Pieces/KingB.png')
-        bk = pygame.transform.scale(bk, (65, 65))
+        bk = pygame.transform.scale(bk, square_dimensions)
 
     # If I am on my Home PC...
     else:
         # B&W Pawns
         wp = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/Pawn.PNG')
-        wp = pygame.transform.scale(wp, (113, 113))
+        wp = pygame.transform.scale(wp, square_dimensions)
         bp = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/PawnB.PNG')
-        bp = pygame.transform.scale(bp, (113, 113))
+        bp = pygame.transform.scale(bp, square_dimensions)
 
         # B&W Knights
         wkn = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/Knight.PNG')
-        wkn = pygame.transform.scale(wkn, (113, 113))
+        wkn = pygame.transform.scale(wkn, square_dimensions)
         bkn = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/KnightB.PNG')
-        bkn = pygame.transform.scale(bkn, (113, 113))
+        bkn = pygame.transform.scale(bkn, square_dimensions)
 
         # B&W Bishops
         wb = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/Bishop.PNG')
-        wb = pygame.transform.scale(wb, (113, 113))
+        wb = pygame.transform.scale(wb, square_dimensions)
         bb = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/BishopB.PNG')
-        bb = pygame.transform.scale(bb,(113, 113))
+        bb = pygame.transform.scale(bb, square_dimensions)
 
         # B&W Rooks
         wr = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/Rook.PNG')
-        wr = pygame.transform.scale(wr, (113, 113))
+        wr = pygame.transform.scale(wr, square_dimensions)
         br = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/RookB.PNG')
-        br = pygame.transform.scale(br,(113, 113))
+        br = pygame.transform.scale(br, square_dimensions)
 
         # B&W Queens
         wq = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/Queen.PNG')
-        wq = pygame.transform.scale(wq, (113, 113))
+        wq = pygame.transform.scale(wq, square_dimensions)
         bq = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/QueenB.PNG')
-        bq = pygame.transform.scale(bq, (113, 113))
+        bq = pygame.transform.scale(bq, square_dimensions)
 
         # B&W Kings
         wk = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/King.PNG')
-        wk = pygame.transform.scale(wk, (113, 113))
+        wk = pygame.transform.scale(wk, square_dimensions)
         bk = pygame.image.load('C:/Users/First Build/source/repos/Chess_Game_PY/Chess_Game/Pieces/KingB.PNG')
-        bk = pygame.transform.scale(bk, (113, 113))
+        bk = pygame.transform.scale(bk, square_dimensions)
 
     return wp, bp, wkn, bkn, wb, bb, wr, br, wq, bq, wk, bk 
     
@@ -124,6 +133,14 @@ def init_board():
     board[0][4] = 'bk'  # Black king
 
     return board
+
+def init_moves(board):
+    moves = copy.deepcopy(board)
+    for row in range(8):
+        for col in range(8):
+            if moves[row][col]:
+                moves[row][col] = 0
+    return moves
 
 # Initilaize sound effects
 def init_sounds():

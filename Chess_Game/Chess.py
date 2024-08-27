@@ -1,11 +1,11 @@
-import pygame
-import sys
-from init import init_board, init_game
+import sys, pygame
+from init import init_board, init_game, init_moves
 from board import draw_board
 from inputs import handle_click
 
-screen = init_game()
-board = init_board()
+screen = init_game() # Initialize game window
+board = init_board() # Initialize the board
+moves = init_moves(board) # Keep track of how many times each piece has moved
 
 # Main game loop
 def game():
@@ -19,8 +19,8 @@ def game():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and not game_over:
                 if event.button == 1:
-                    game_over = handle_click(pygame.mouse.get_pos(),board, screen,1)
+                    game_over = handle_click(pygame.mouse.get_pos(), board, screen, 1, moves)
                 elif event.button == 3:
-                    game_over = handle_click(pygame.mouse.get_pos(),board, screen,3)
+                    game_over = handle_click(pygame.mouse.get_pos(), board, screen, 3, moves)
         pygame.display.flip()
 game() 

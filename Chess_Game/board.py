@@ -1,5 +1,5 @@
 import pygame
-from init import width 
+from init import height 
 from resources import piece_images
 
 # Draw the chess board
@@ -7,7 +7,7 @@ def draw_board(screen, board):
     light = (228, 233, 235)
     dark = (153 , 191, 209)
     colors = [light,dark]
-    tile_size = width // 8 
+    tile_size = height // 8 
     
     # Print the board
     for row in range(8):

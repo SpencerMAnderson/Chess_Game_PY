@@ -2,7 +2,7 @@ from resources import pieces
 import copy
 
 # Function to check if the move can be played
-def logic(selected_piece, selected_pos, end_pos, board, pieces):
+def logic(selected_piece, selected_pos, end_pos, board, pieces, moves):
     x1, y1 = selected_pos
     x2, y2 = end_pos
     
@@ -75,34 +75,34 @@ def logic(selected_piece, selected_pos, end_pos, board, pieces):
         
         # Castling logic
         if dy == 2 and dx == 0:  # Castling move is two squares horizontally
-            if selected_piece == 'wk':
+            if selected_piece == 'wk' and moves[7][4] == 0:
                 # White king castling
-                if y2 == 6 and board[7][7] == 'wr':  # Castling kingside with h1 rook
+                if y2 == 6 and board[7][7] == 'wr' and moves[7][7] == 0:  # Castling kingside with h1 rook
                     if (check_straight_line(7, 4, 7, 7, board) and 
-                        not is_in_check(board, (7, 4), True) and
-                        not is_in_check(board, (7, 5), True) and 
-                        not is_in_check(board, (7, 6), True)):
+                        not is_in_check(board, (7, 4), True, moves) and
+                        not is_in_check(board, (7, 5), True, moves) and 
+                        not is_in_check(board, (7, 6), True, moves)):
                         return True
-                elif y2 == 2 and board[7][0] == 'wr':  # Castling queenside with a1 rook
+                elif y2 == 2 and board[7][0] == 'wr' and moves[7][0] == 0:  # Castling queenside with a1 rook
                     if (check_straight_line(7, 0, 7, 2, board) and 
-                        not is_in_check(board, (7, 4), True) and 
-                        not is_in_check(board, (7, 3), True) and 
-                        not is_in_check(board, (7, 2), True)):
+                        not is_in_check(board, (7, 4), True, moves) and 
+                        not is_in_check(board, (7, 3), True, moves) and 
+                        not is_in_check(board, (7, 2), True, moves)):
                         return True
 
-            elif selected_piece == 'bk':
+            elif selected_piece == 'bk' and moves[0][4] == 0:
                 # Black king castling
-                if y2 == 6 and board[0][7] == 'br':  # Castling kingside with h8 rook
+                if y2 == 6 and board[0][7] == 'br' and moves[0][7] == 0:  # Castling kingside with h8 rook
                     if (check_straight_line(0, 4, 0, 6, board) and 
-                        not is_in_check(board, (0, 4), False) and 
-                        not is_in_check(board, (0, 5), False) and 
-                        not is_in_check(board, (0, 6), False)):
+                        not is_in_check(board, (0, 4), False, moves) and 
+                        not is_in_check(board, (0, 5), False, moves) and 
+                        not is_in_check(board, (0, 6), False, moves)):
                         return True
-                elif y2 == 2 and board[0][0] == 'br':  # Castling queenside with a8 rook
+                elif y2 == 2 and board[0][0] == 'br' and moves[0][0] == 0:  # Castling queenside with a8 rook
                     if (check_straight_line(0, 0, 0, 2, board) and 
-                        not is_in_check(board, (0, 4), False) and 
-                        not is_in_check(board, (0, 3), False) and 
-                        not is_in_check(board, (0, 2), False)):
+                        not is_in_check(board, (0, 4), False, moves) and 
+                        not is_in_check(board, (0, 3), False, moves) and 
+                        not is_in_check(board, (0, 2), False, moves)):
                         return True
 
     return False  # Move is not valid
@@ -147,19 +147,19 @@ def king_position(board, king_color):
     return None  
     
 # Check if a king is in check
-def is_in_check(board, king_pos, is_white):
+def is_in_check(board, king_pos, is_white, moves):
     opponent_color = 'b' if is_white else 'w'
     for row in range(8):
         for col in range(8):
             piece = board[row][col]
             if piece and piece.startswith(opponent_color):
                 # If the piece's logic can move to the king...
-                if logic(piece, (row, col), king_pos, board, pieces):
+                if logic(piece, (row, col), king_pos, board, pieces, moves):
                     return True  # The king is in check
     return False
 
 # Determine if it is checkmate
-def is_checkmate(king_pos, board, pieces):
+def is_checkmate(king_pos, board, pieces, moves):
     king_x, king_y = king_pos
     king_color = 'w' if 'w' in board[king_x][king_y] else 'b'
     
@@ -173,7 +173,7 @@ def is_checkmate(king_pos, board, pieces):
                 for x2 in range(8):
                     for y2 in range(8):
                         # Check if that piece can move to a random square on the board
-                        if logic(piece, (x1, y1), (x2, y2), board, pieces):
+                        if logic(piece, (x1, y1), (x2, y2), board, pieces, moves):
                             # Simulate the move
                             simulated_board = copy.deepcopy(board)
                             simulated_board[x2][y2] = simulated_board[x1][y1]
@@ -181,7 +181,7 @@ def is_checkmate(king_pos, board, pieces):
                             new_king_pos = (x2,y2) if piece.endswith('k') else king_pos
                     
                             # Check if the king is still in check after the move
-                            if not is_in_check(simulated_board, new_king_pos, king_color == 'w'):
+                            if not is_in_check(simulated_board, new_king_pos, king_color == 'w', moves):
                                 return False  # If any piece can prevent checkmate
                             
     # If no valid moves can prevent check, it's checkmate

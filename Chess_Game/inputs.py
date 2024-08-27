@@ -1,6 +1,6 @@
 import pygame
 import copy
-from init import width, init_sounds
+from init import height, init_sounds
 from resources import pieces, board_pos
 from Logic import logic, king_position, is_in_check, is_checkmate
 from board import draw_board
@@ -10,17 +10,17 @@ selected_pos = None
 move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle = init_sounds()
 
 # Logic for handling user click inputs
-def handle_click(pos,board,screen,click):
+def handle_click(pos, board, screen, click, moves):
     if click == 1:
         global selected_piece, selected_pos
         x,y = pos
-        tile_size = width // 8
+        tile_size = height // 8
         row = y // tile_size
         col = x // tile_size
         clicked_pos = (row,col)
 
         if selected_piece: # If a piece is clicked on
-            game_over = move_piece(clicked_pos,board,screen) # Send the end pos to move_piece method
+            game_over = move_piece(clicked_pos, board, screen, moves) # Send the end pos to move_piece method
             selected_piece = None
             selected_pos = None
             return game_over
@@ -33,7 +33,7 @@ def handle_click(pos,board,screen,click):
 
 player_turn = 0 # Global variable to keep track of which player's turn it is
 
-def move_piece(end_pos, board, screen):
+def move_piece(end_pos, board, screen, moves):
     global player_turn
     x1, y1 = selected_pos
     x2, y2 = end_pos
@@ -52,7 +52,7 @@ def move_piece(end_pos, board, screen):
 
     # Ensure the piece being moved belongs to the current player
     if current_player in pieces[selected_piece]:  
-        if not logic(selected_piece, selected_pos, end_pos, board, pieces):
+        if not logic(selected_piece, selected_pos, end_pos, board, pieces, moves):
             pygame.mixer.Sound.play(invalid_move)
             print("Invalid move")
         else:
@@ -61,16 +61,16 @@ def move_piece(end_pos, board, screen):
             simulated_board[x2][y2] = simulated_board[x1][y1]
             simulated_board[x1][y1] = None
 
-            if is_in_check(simulated_board, king_position(simulated_board, current_king), current_king == 'w'):
+            if is_in_check(simulated_board, king_position(simulated_board, current_king), current_king == 'w', moves):
                 pygame.mixer.Sound.play(invalid_move)
                 print(f"Invalid move: The {current_player.lower()} king would be in check!")
             else:
                 # Execute the move on the actual board
-                execute_move(board, x1, y1, x2, y2, screen)
+                execute_move(board, x1, y1, x2, y2, screen, moves)
 
                 # Check if the opponent's king is now in check
-                if is_in_check(board, king_position(board, opponent_king), current_king != 'w'):
-                    if is_checkmate(king_position(board, opponent_king), board, pieces):
+                if is_in_check(board, king_position(board, opponent_king), current_king != 'w', moves):
+                    if is_checkmate(king_position(board, opponent_king), board, pieces, moves):
                         print(f"Game over! {current_player} wins!")
                         pygame.mixer.Sound.play(victory)
                         return True
@@ -83,27 +83,40 @@ def move_piece(end_pos, board, screen):
     return False
 
 
-def execute_move(board, x1, y1, x2, y2, screen):
+def execute_move(board, x1, y1, x2, y2, screen, moves):
     global player_turn
     captured = True if board[x2][y2] is not None else False
 
     print(pieces[selected_piece], board_pos[(x1, y1)], "to", board_pos[(x2, y2)])
     
     # Check if the move is a castling move
-    if board[x1][y1] in ['wk', 'bk'] and abs(y2 - y1) == 2:
+    if board[x1][y1] in ['wk', 'bk'] and abs(y2 - y1) == 2 and moves[x1][y1] == 0:
         # Kingside castling
-        if y2 == 6:
+        if y2 == 6 and moves[x2][7] == 0:
             board[x2][5] = board[x2][7]  # Move the rook to f1/f8
             board[x2][7] = None          # Clear the original rook position
+
+            # Increment the move counter by 1
+            moves[x2][5] = (moves[x2][7] + 1)
+            moves[x2][7] = 0
+
             pygame.mixer.Sound.play(castle)
         # Queenside castling
-        elif y2 == 2:
+        elif y2 == 2 and moves[x2][0] == 0:
             board[x2][3] = board[x2][0]  # Move the rook to d1/d8
             board[x2][0] = None          # Clear the original rook position
+
+            # Increment the move counter by 1
+            moves[x2][3] = (moves[x2][0] + 1)
+            moves[x2][0] = 0
+
             pygame.mixer.Sound.play(castle)
     
-    # Regular move or castling king move
+    # Increment the move counter by 1
+    moves[x2][y2] = (moves[x1][y1] + 1)
+    moves[x1][y1] = 0
 
+    # Regular move or castling king move
     board[x2][y2] = board[x1][y1]
     board[x1][y1] = None
 
