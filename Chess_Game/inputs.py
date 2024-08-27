@@ -1,6 +1,6 @@
 import pygame
 import copy
-from init import height, init_sounds
+from init import dimension, init_sounds
 from resources import pieces, board_pos
 from Logic import logic, king_position, is_in_check, is_checkmate
 from board import draw_board
@@ -14,7 +14,7 @@ def handle_click(pos, board, screen, click, moves):
     if click == 1:
         global selected_piece, selected_pos
         x,y = pos
-        tile_size = height // 8
+        tile_size = dimension // 8
         row = y // tile_size
         col = x // tile_size
         clicked_pos = (row,col)
