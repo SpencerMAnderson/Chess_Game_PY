@@ -71,29 +71,51 @@ def init_images():
     return wp, bp, wkn, bkn, wb, bb, wr, br, wq, bq, wk, bk 
     
 # Initialize a 2D array with all starting positions
-def init_board():
+def init_board(player):
     # Blank 8x8 board
     board = [[None for _ in range(8)] for _ in range(8)]
 
-    # Initialize the pieces
-    for col in range(8):
-        board[6][col] = 'wp'  # White pawns
-        board[1][col] = 'bp'  # Black pawns
+    if player == 'w':
+        # Initialize the pieces
+        for col in range(8):
+            board[6][col] = 'wp'  # White pawns
+            board[1][col] = 'bp'  # Black pawns
 
-    board[7][0] = board[7][7] = 'wr'  # White rooks
-    board[0][0] = board[0][7] = 'br'  # Black rooks
+        board[7][0] = board[7][7] = 'wr'  # White rooks
+        board[0][0] = board[0][7] = 'br'  # Black rooks
 
-    board[7][1] = board[7][6] = 'wkn' # White knights
-    board[0][1] = board[0][6] = 'bkn'  # Black knights
+        board[7][1] = board[7][6] = 'wkn' # White knights
+        board[0][1] = board[0][6] = 'bkn'  # Black knights
 
-    board[7][2] = board[7][5] = 'wb'  # White bishops
-    board[0][2] = board[0][5] = 'bb'  # Black bishops
+        board[7][2] = board[7][5] = 'wb'  # White bishops
+        board[0][2] = board[0][5] = 'bb'  # Black bishops
 
-    board[7][3] = 'wq'  # White queen
-    board[0][3] = 'bq'  # Black queen
+        board[7][3] = 'wq'  # White queen
+        board[0][3] = 'bq'  # Black queen
 
-    board[7][4] = 'wk'  # White king
-    board[0][4] = 'bk'  # Black king
+        board[7][4] = 'wk'  # White king
+        board[0][4] = 'bk'  # Black king
+
+    elif player == 'b':
+        # Initialize the pieces
+        for col in range(8):
+            board[1][col] = 'wp'  # White pawns
+            board[6][col] = 'bp'  # Black pawns
+
+        board[0][0] = board[0][7] = 'wr'  # White rooks
+        board[7][0] = board[7][7] = 'br'  # Black rooks
+
+        board[0][1] = board[0][6] = 'wkn' # White knights
+        board[7][1] = board[7][6] = 'bkn'  # Black knights
+
+        board[0][2] = board[0][5] = 'wb'  # White bishops
+        board[7][2] = board[7][5] = 'bb'  # Black bishops
+
+        board[0][4] = 'wq'  # White queen
+        board[7][4] = 'bq'  # Black queen
+
+        board[0][3] = 'wk'  # White king
+        board[7][3] = 'bk'  # Black king
 
     return board
 

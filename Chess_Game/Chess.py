@@ -3,16 +3,20 @@ from init import init_board, init_game, init_moves
 from board import draw_board
 from inputs import handle_click
 
+player = 'w' # White or black player
+
 screen = init_game() # Initialize game window
-board = init_board() # Initialize the board
+board = init_board(player) # Initialize the board
 moves = init_moves(board) # Keep track of how many times each piece has moved
+
 
 # Main game loop
 def game():
     running = True
     game_over = False
     while running:
-        draw_board(screen, board)
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        draw_board(screen, board, (mouse_x, mouse_y))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

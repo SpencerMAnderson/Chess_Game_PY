@@ -16,6 +16,7 @@ def logic(selected_piece, selected_pos, end_pos, board, pieces, moves):
         # Capture diagonally
         if abs(y2 - y1) == 1 and x2 == x1 - 1 and board[x2][y2] is not None and "Black" in pieces[board[x2][y2]]:
             return True  
+        
 
     elif selected_piece == 'bp':  # Black pawn logic
         # Move one step forward
@@ -188,6 +189,9 @@ def is_checkmate(king_pos, board, pieces, moves):
     return True
 
 def en_passant():
+    return True
+
+def promotion():
     return True
 
 
