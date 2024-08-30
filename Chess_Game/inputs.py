@@ -1,5 +1,4 @@
-import pygame
-import copy
+import pygame, copy
 from init import dimension, init_sounds
 from resources import pieces, board_pos
 from Logic import logic, king_position, is_in_check, is_checkmate
