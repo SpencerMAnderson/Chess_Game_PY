@@ -14,31 +14,23 @@ def game():
     running = True
     game_over = False
     while running:
-        draw_board(screen, board, player) # Display the board
+        draw_board(screen, board, player)  # Display the board
         x, y = pygame.mouse.get_pos()
         half = dimension / 2
 
-        if player == 'b':
-            # Calculate mirrored coordinates
+        if player == 'b':  # If the player is black, mirror coordinate inputs
             mirrored_x = half - (x - half)
             mirrored_y = half - (y - half)
-            
-            # Create a tuple for the mirrored coordinates
-            mirrored_coords = (abs(int(mirrored_x)), abs(int(mirrored_y)))
+            coords = (abs(int(mirrored_x)), abs(int(mirrored_y)))
+        else:
+            coords = (x, y)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN and not game_over and player == 'b':
-                if event.button == 1:
-                    game_over = handle_click(mirrored_coords, board, screen, 1, moves, player)
-                elif event.button == 3:
-                    game_over = handle_click(mirrored_coords, board, screen, 3, moves, player)
             elif event.type == pygame.MOUSEBUTTONDOWN and not game_over:
-                if event.button == 1:
-                    game_over = handle_click((x,y), board, screen, 1, moves, player)
-                elif event.button == 3:
-                    game_over = handle_click((x,y), board, screen, 3, moves, player)
+                if event.button in [1, 3]:  # Check for left (1) and right (3) mouse buttons
+                    game_over = handle_click(coords, board, screen, event.button, moves, player)
         pygame.display.flip()
-game() 
+game()
