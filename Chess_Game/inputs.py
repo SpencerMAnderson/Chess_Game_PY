@@ -7,12 +7,15 @@ from board import draw_board
 selected_piece = None
 selected_pos = None
 move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle = init_sounds()
+player_color = None
 
 # Logic for handling user click inputs
-def handle_click(pos, board, screen, click, moves):
+def handle_click(pos, board, screen, click, moves, player):
     if click == 1:
-        global selected_piece, selected_pos
-        x,y = pos
+        global selected_piece, selected_pos, player_color
+        player_color = player # Player color
+        # Write an if statement to reverse the inputs on the board for black
+        x, y = pos
         tile_size = dimension // 8
         row = y // tile_size
         col = x // tile_size
@@ -83,7 +86,7 @@ def move_piece(end_pos, board, screen, moves):
 
 
 def execute_move(board, x1, y1, x2, y2, screen, moves):
-    global player_turn
+    global player_turn, player_color
     captured = True if board[x2][y2] is not None else False
 
     print(pieces[selected_piece], board_pos[(x1, y1)], "to", board_pos[(x2, y2)])
@@ -119,7 +122,7 @@ def execute_move(board, x1, y1, x2, y2, screen, moves):
     board[x2][y2] = board[x1][y1]
     board[x1][y1] = None
 
-    draw_board(screen,board)
+    draw_board(screen,board, player_color)
     pygame.display.flip()
     if captured:
         pygame.mixer.Sound.play(piece_captured)
