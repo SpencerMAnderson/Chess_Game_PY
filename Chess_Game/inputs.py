@@ -122,7 +122,7 @@ def execute_move(board, x1, y1, x2, y2, screen, moves):
     board[x2][y2] = board[x1][y1]
     board[x1][y1] = None
 
-    draw_board(screen,board, player_color)
+    draw_board(screen, board, player_color)
     pygame.display.flip()
     if captured:
         pygame.mixer.Sound.play(piece_captured)

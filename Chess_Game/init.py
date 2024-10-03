@@ -71,7 +71,7 @@ def init_images():
     return wp, bp, wkn, bkn, wb, bb, wr, br, wq, bq, wk, bk 
     
 # Initialize a 2D array with all starting positions
-def init_board(player):
+def init_board():
     # Blank 8x8 board
     board = [[None for _ in range(8)] for _ in range(8)]
 

@@ -1,5 +1,4 @@
 from init import init_images
-#from utils import tint_pieces
 
 def load_images():
     wp, bp, wkn, bkn, wb, bb, wr, br, wq, bq, wk, bk = init_images()
