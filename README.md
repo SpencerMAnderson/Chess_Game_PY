@@ -49,6 +49,7 @@ Finally, to run the chess game, navigate to the **Chess_Game_PY** directory and 
 `python Chess_Game/Chess.py`
 
 (To switch player perspectives, you can manually change the _player_ variable in **Chess.py** (line 6) to: 'w' or 'b')
+
 ![Player Swap Demo](GIFs/player_swap_demo.gif)
 
 ### 5. Deactivate the Virtual Environment
@@ -70,6 +71,7 @@ Chess_Game_PY/
 │   ├── Pieces/               # Folder containing images for pieces
 │   ├── sounds/               # Folder containing sound effects
 │   └── __pycache__/          # Folder containing compiled Python files
+├── GIFs                      # Folder containing GIFs for README.md
 ├── venv/                     # Virtual environment folder (not tracked by Git)
 ├── requirements.txt          # File listing the required dependencies
 └── README.md                 # This file
