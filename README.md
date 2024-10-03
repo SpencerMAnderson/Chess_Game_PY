@@ -24,15 +24,15 @@ You can clone the repository to your local machine using the following bash comm
 ### 2. Setup a Virtual Environment
 Navigate to the project directory:
 
-cd Chess_Game_PY
+`cd Chess_Game_PY`
 
-For Windows:
+**For Windows:**
 ```
 python -m venv venv
 venv\Scripts\activate
 ```
 
-For macOS/Linux:
+**For macOS/Linux:**
 ```
 python3 -m venv venv
 source venv/bin/activate
