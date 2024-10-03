@@ -22,7 +22,7 @@ You can clone the repository to your local machine using the following bash comm
 ### 2. Setup a Virtual Environment
 Navigate to the project directory:
 
-cd Chess_Game_PY
+`cd Chess_Game_PY`
 
 For Windows:
 ```
