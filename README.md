@@ -46,7 +46,7 @@ Finally, to run the chess game, navigate to the **Chess_Game_PY** directory and 
 
 `python Chess_Game/Chess.py`
 
-To switch player perspectives, you can manually change the _player_ variable in **Chess.py** (line 6) to: 'w' or 'b'
+(To switch player perspectives, you can manually change the _player_ variable in **Chess.py** (line 6) to: 'w' or 'b')
 
 ### 5. Deactivate the Virtual Environment
 When you're done, you can deactivate the virtual environment with the command:
@@ -71,5 +71,14 @@ Chess_Game_PY/
 ├── requirements.txt          # File listing the required dependencies
 └── README.md                 # This file
 ```
+
+## Controls
+- To move pieces on the board, you first click on the piece you want to move, and then click on the square you want to move to.
+- To cancel a move, you can right-click to deselect a piece.
+
+## Future updates
+- Currently, there is no logic to handle en passant moves or piece promotion. These will be implemented in future updates to this project.
+- I plan on implementing a timer system as well as a menu where players can select time formats.
+
 ## License
 This project is completely open-source. Feel free to use and modify the code however you like!
