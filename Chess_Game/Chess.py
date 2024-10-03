@@ -3,7 +3,7 @@ from init import init_board, init_game, init_moves, dimension
 from board import draw_board
 from inputs import handle_click
 
-player = 'w' # White or black player
+player = 'w' # White or black player. Syntax is 'w' or 'b'
 
 screen = init_game() # Initialize game window
 board = init_board() # Initialize the board

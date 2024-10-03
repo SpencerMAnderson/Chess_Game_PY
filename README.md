@@ -2,6 +2,8 @@
 
 This is a chess game built in Python using the Pygame library. It includes standard chess mechanics with an interactive UI
 
+![Chess Board Demo](GIFs/chess_board_demo.gif)
+
 ## Features
 - Playable chess game with basic chess moves
 - Interactive board
@@ -47,6 +49,7 @@ Finally, to run the chess game, navigate to the **Chess_Game_PY** directory and 
 `python Chess_Game/Chess.py`
 
 (To switch player perspectives, you can manually change the _player_ variable in **Chess.py** (line 6) to: 'w' or 'b')
+![Player Swap Demo](GIFs/player_swap_demo.gif)
 
 ### 5. Deactivate the Virtual Environment
 When you're done, you can deactivate the virtual environment with the command:
