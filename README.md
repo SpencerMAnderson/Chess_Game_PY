@@ -54,7 +54,7 @@ When you're done, you can deactivate the virtual environment with the command:
 `deactivate`
 
 ## Project Structure
-
+```
 Chess_Game_PY/
 ├── Chess_Game/               # Folder containing game files
 │   ├── board.py
@@ -70,6 +70,6 @@ Chess_Game_PY/
 ├── venv/                     # Virtual environment folder (not tracked by Git)
 ├── requirements.txt          # File listing the required dependencies
 └── README.md                 # This file
-
+```
 ## License
 This project is completely open-source. Feel free to use and modify the code however you like!
