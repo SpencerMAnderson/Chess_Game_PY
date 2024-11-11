@@ -1,9 +1,11 @@
 import sys, pygame
 from init import init_board, init_game, init_moves, dimension
 from board import draw_board
-from inputs import handle_click
+from inputs import handle_click, songs
 
 player = 'w' # White or black player. Syntax is 'w' or 'b'
+play_music = True
+selected_track = 0
 
 screen = init_game() # Initialize game window
 board = init_board() # Initialize the board
@@ -11,6 +13,9 @@ moves = init_moves(board) # Keep track of how many times each piece has moved
 
 # Main game loop
 def game():
+    #pygame.mixer.Sound.play(songs[selected_track]) 
+    #pygame.mixer.Sound.set_volume(songs[selected_track], 0.1) if play_music == True else pygame.mixer.Sound.set_volume(songs[selected_track], 0)
+
     running = True
     game_over = False
     while running:

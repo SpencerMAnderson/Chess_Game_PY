@@ -1,12 +1,13 @@
 import pygame, copy
 from init import dimension, init_sounds
 from resources import pieces, board_pos
-from Logic import logic, king_position, is_in_check, is_checkmate
+from logic import logic, king_position, is_in_check, is_checkmate
 from board import draw_board
 
 selected_piece = None
 selected_pos = None
-move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle = init_sounds()
+move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle , song1, song2, song3 = init_sounds()
+songs = [song1, song2, song3]
 player_color = None
 
 # Logic for handling user click inputs

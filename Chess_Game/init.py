@@ -128,4 +128,13 @@ def init_sounds():
     pygame.mixer.Sound.set_volume(game_start, 0.3)
     pygame.mixer.Sound.set_volume(castle, 1)
 
-    return move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle
+    # Song variables
+    song1 = pygame.mixer.Sound(os.path.join(sounds_path, 'song1.mp3'))
+    song2 = pygame.mixer.Sound(os.path.join(sounds_path, 'song2.mp3'))
+    song3 = pygame.mixer.Sound(os.path.join(sounds_path, 'song3.mp3'))
+    
+    song1.set_volume(0.2)
+    song2.set_volume(0.2)
+    song3.set_volume(0.2)
+
+    return move_piece_sound, piece_captured, check, invalid_move, victory, game_start, castle, song1, song2, song3
